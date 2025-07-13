@@ -1,14 +1,17 @@
 pipeline {
   agent any
   parameters {
-     credentials credentialType: 'com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl', 
-     defaultValue: '', 
-     description: 'Docker credentials', 
-     name: 'DOCKER_PARAM', 
-     required: true
+    parameters {
+      credentials
+        credentialType: 'com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl',
+        defaultValue: '',
+        description: 'Docker credentials',
+        name: 'DOCKER_PARAM',
+        required: true
+    }
   }
   environment{
-    DOCKER=credentials("${DOCKER_PARAM}")
+    DOCKER = credentials("${DOCKER_PARAM}")
     //DOCKER  USU:PASS
     //DOCKER_USR   USER
     //DOCKER_PSW    PASSSWORD
@@ -16,13 +19,13 @@ pipeline {
   stages {
     stage('Docker Build') {
       steps {
-        sh 'docker build -t apasoft/jenkins-web:latest .'
+        sh 'docker build -t darwinrv94/jenkins-web:latest .'
       }
     }
     stage('Docker Push') {
-      steps {        
+      steps {
           sh "docker login -u ${env.DOCKER_USR} -p ${env.DOCKER_PSW}"
-          sh 'docker push apasoft/jenkins-web:latest'
+          sh 'docker push darwinrv94/jenkins-web:latest'
       }
     }
   }
